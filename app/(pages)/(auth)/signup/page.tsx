@@ -1,9 +1,5 @@
 'use client';
 
-import { object, string, email, minLength, Output } from 'valibot';
-import { valibotResolver } from '@hookform/resolvers/valibot';
-import { useForm } from 'react-hook-form';
-import { Label } from '@/app/components/ui/label';
 import { Button } from '@/app/components/ui/button';
 import {
   Form,
@@ -11,36 +7,41 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from '@/app/components/ui/form';
 import { Input } from '@/app/components/ui/input';
+import { Label } from '@/app/components/ui/label';
 import { registerApi } from '@/app/lib';
+import { valibotResolver } from '@hookform/resolvers/valibot';
+import { useForm } from 'react-hook-form';
+import { Output, email, minLength, object, string } from 'valibot';
+
 const RegisterSchema = object({
   email: string([
     minLength(1, 'Please enter your email.'),
-    email('Invalid email.')
+    email('Invalid email.'),
   ]),
   name: string([minLength(1, 'Please enter your name.')]),
   password: string([
     minLength(1, 'Please enter your password.'),
-    minLength(8, 'Your password must have 8 characters or more.')
-  ])
+    minLength(8, 'Your password must have 8 characters or more.'),
+  ]),
 });
 
 type RegisterDataType = Output<typeof RegisterSchema>;
 
-const SignUp = () => {
+const Page = () => {
   const form = useForm<RegisterDataType>({
     resolver: valibotResolver(RegisterSchema),
     defaultValues: {
       email: '',
       name: '',
-      password: ''
-    }
+      password: '',
+    },
   });
 
   const onSubmit = async (values: RegisterDataType) => {
-    const res = await registerApi(values);
+    await registerApi(values);
   };
 
   return (
@@ -94,4 +95,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Page;

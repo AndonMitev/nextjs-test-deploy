@@ -3,32 +3,22 @@
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
+import { Button } from './ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { Button } from './ui/button';
-import { useEffect, useState } from 'react';
 
 enum THEMES {
   LIGHT = 'light',
   DARK = 'dark',
-  SYSTEM = 'system '
+  SYSTEM = 'system ',
 }
 
 export function ThemeToggle() {
-  const [isMounted, setIsMounted] = useState(false);
   const { setTheme } = useTheme();
-
-  // useEffect(() => {
-  //   setIsMounted(true);
-  // }, []);
-
-  // if (!isMounted) {
-  //   return null;
-  // }
 
   return (
     <DropdownMenu>

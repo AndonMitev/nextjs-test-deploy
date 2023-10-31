@@ -1,4 +1,4 @@
-import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
+import { withAuth } from 'next-auth/middleware';
 
 /**
  * Middleware for route protection in a Next.js application.
@@ -13,7 +13,7 @@ import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
  */
 
 export default withAuth(
-  function middleware(request: NextRequestWithAuth) {
+  function middleware() {
     // const isAdmin = request.nextauth.token?.role === 'admin';
     // if (request.nextUrl.pathname === '/about' && !isAdmin) {
     //   return NextResponse.rewrite(new URL('/denied', request.url));
@@ -23,8 +23,8 @@ export default withAuth(
     callbacks: {
       authorized({ token }) {
         return Boolean(token?.accessToken);
-      }
-    }
+      },
+    },
   }
 );
 
@@ -33,5 +33,5 @@ export default withAuth(
  * // const PROTECTED_ROUTES = ['/about', '/update-password', '/movies'];
  */
 export const config = {
-  matcher: ['/about', '/update-password', '/movies']
+  matcher: ['/about', '/update-password', '/movies'],
 };

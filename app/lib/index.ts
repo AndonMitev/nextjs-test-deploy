@@ -1,4 +1,4 @@
 export * from './env';
+export * from './errors';
+export * from './services';
 export * from './utils';
-export * from './api';
-// export * from './logger';

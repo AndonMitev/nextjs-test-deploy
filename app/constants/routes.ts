@@ -8,5 +8,5 @@ export enum APP_ROUTES {
   HOME = '/',
 
   ABOUT = '/about',
-  MOVIES = '/movies'
+  MOVIES = '/movies',
 }

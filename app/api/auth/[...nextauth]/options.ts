@@ -1,28 +1,28 @@
+import { env } from '@/app/lib';
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import GithubProvider from 'next-auth/providers/github';
-import GoogleProvider from 'next-auth/providers/google';
 import DiscordProvider from 'next-auth/providers/discord';
 import FacebookProvider from 'next-auth/providers/facebook';
-import { env } from '@/app/lib';
+import GithubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_ID,
-      clientSecret: env.GOOGLE_SECRET
+      clientSecret: env.GOOGLE_SECRET,
     }),
     FacebookProvider({
       clientId: env.FACEBOOK_ID,
-      clientSecret: env.FACEBOOK_SECRET
+      clientSecret: env.FACEBOOK_SECRET,
     }),
     GithubProvider({
       clientId: env.GITHUB_ID,
-      clientSecret: env.GITHUB_SECRET
+      clientSecret: env.GITHUB_SECRET,
     }),
     DiscordProvider({
       clientId: env.DISCORD_ID,
-      clientSecret: env.DISCORD_SECRET
+      clientSecret: env.DISCORD_SECRET,
     }),
     CredentialsProvider({
       name: 'Credentials',
@@ -30,25 +30,25 @@ export const authOptions: NextAuthOptions = {
         email: {
           label: 'Email',
           type: 'email',
-          placeholder: 'example@gmail.com'
+          placeholder: 'example@gmail.com',
         },
         password: {
           label: 'Password',
-          type: 'password'
-        }
+          type: 'password',
+        },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         if (!credentials?.email || !credentials.password) {
           return null;
         }
 
-        const response = await fetch(`${env.NEXT_PUBLIC_APP_URL}/auth/login`, {
+        const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/login`, {
           method: 'POST',
           body: JSON.stringify({
             email: credentials.email,
-            password: credentials.password
+            password: credentials.password,
           }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
         });
 
         const respData = await response.json();
@@ -58,8 +58,8 @@ export const authOptions: NextAuthOptions = {
         }
 
         return respData.data;
-      }
-    })
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user, account }) {
@@ -69,7 +69,7 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
       }
 
-      // Handle GoogleProvider
+      // Handle Providers
       if (account?.access_token) {
         token.accessToken = account.access_token;
       }
@@ -83,6 +83,6 @@ export const authOptions: NextAuthOptions = {
       }
 
       return session;
-    }
-  }
+    },
+  },
 };

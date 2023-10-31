@@ -1,23 +1,7 @@
-export type RegisterResponseType = {
-  statusCode: number;
-  message: string;
-  data: {
-    email: string;
-  };
-};
+import { ApiResponse } from '../base-response';
 
-export type LoginResponseType = {
-  statusCode: number;
-  message: string;
-  data: {
-    accessToken: string;
-  };
-};
+export type RegisterResponseType = ApiResponse<{ email: string }>;
 
-export type UpdatePasswordResponseType = {
-  statusCode: number;
-  message: string;
-  data: {
-    email: string;
-  };
-};
+export type LoginResponseType = ApiResponse<{ accessToken: string }>;
+
+export type UpdatePasswordResponseType = ApiResponse<{ email: string }>;

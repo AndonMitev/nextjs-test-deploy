@@ -1,29 +1,44 @@
 import { MetadataRoute } from 'next';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  /**
-   * Replace `https://acme.com` with URL of the hosted version aka `https://weichain-nextjs-template.org`
-   */
-  const baseUrl = 'https://acme.com';
+import { APP_ROUTES } from '@/app/constants';
+import { fetchMovies } from '@/app/lib/services';
+import { env } from './lib';
 
-  const posts = [{ id: 1 }];
+const baseUrl = env.APP_BASE_URL;
 
-  // const posts = await getPosts()
+const getMovieUrls = async () => {
+  const movies = await fetchMovies();
 
-  const postUrls = posts.map((post) => ({
-    url: `${baseUrl}/posts/${post.id}`,
-    lastModified: new Date()
+  return movies.map((movie: any) => ({
+    url: `${baseUrl}/${APP_ROUTES.MOVIES}/${movie.id}`,
+    lastModified: Date.now(),
   }));
+};
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const movieUrls = await getMovieUrls();
 
   return [
     {
       url: baseUrl,
-      lastModified: new Date()
+      lastModified: new Date(),
     },
     {
-      url: `${baseUrl}/posts`,
-      lastModified: new Date()
+      url: `${baseUrl}/${APP_ROUTES.SIGNIN}`,
+      lastModified: new Date(),
     },
-    ...postUrls
+    {
+      url: `${baseUrl}/${APP_ROUTES.SIGNUP}`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/${APP_ROUTES.ABOUT}`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/${APP_ROUTES.MOVIES}`,
+      lastModified: new Date(),
+    },
+    ...movieUrls,
   ];
 }

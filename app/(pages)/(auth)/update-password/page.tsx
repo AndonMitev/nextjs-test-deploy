@@ -1,22 +1,28 @@
 'use client';
 
-import { registerApi, updatePasswordApi } from '@/app/lib';
+import { APP_ROUTES } from '@/app/constants';
+import { FetchError, updatePasswordApi } from '@/app/lib';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-const UpdatePassword = () => {
-  const [oldPassword, setOldPassword] = useState('register_password_123456');
-  const [newPassword, setNewPassword] = useState('register_password_1234567');
+const Page = () => {
+  const router = useRouter();
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   const handlePasswordChange = async () => {
-    await updatePasswordApi({ newPassword, oldPassword });
-  };
+    try {
+      await updatePasswordApi({
+        oldPassword,
+        newPassword,
+      });
+    } catch (_error) {
+      const error = _error as FetchError;
 
-  const handleRegister = async () => {
-    await registerApi({
-      email: 'testfdfd@abv.bg',
-      name: 'ndsndnsadsa',
-      password: 'iewjqiejwiewqewq'
-    });
+      if (error.status === 401) {
+        router.push(APP_ROUTES.SIGNIN);
+      }
+    }
   };
 
   return (
@@ -35,9 +41,9 @@ const UpdatePassword = () => {
           onChange={(e) => setNewPassword(e.target.value)}
         />
       </div>
-      <button onClick={handleRegister}>Execute</button>
+      <button onClick={handlePasswordChange}>Execute</button>
     </div>
   );
 };
 
-export default UpdatePassword;
+export default Page;

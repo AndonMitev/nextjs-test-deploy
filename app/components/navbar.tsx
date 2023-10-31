@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { ThemeToggle } from '@/app/components';
 import { APP_ROUTES } from '@/app/constants';
+import Link from 'next/link';
 
 export function Navbar() {
   return (
